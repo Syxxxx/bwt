@@ -1,28 +1,40 @@
-name: Release
+name: "Release"
 
 on:
   release:
-    types: [published]
+    types:
+      - "published"
+
+permissions: {}
 
 jobs:
   release:
-    name: Prepare Release
-    runs-on: ubuntu-latest
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: "Checkout the repository"
+        uses: "actions/checkout@v4"
 
-      - name: Zip component
+      - name: "Adjust version number"
+        shell: "bash"
         run: |
-          cd custom_components/bwt
-          zip -r ../../bwt.zip .
+          # Install yq if not present (it is usually present on ubuntu-latest but good to be safe or use a different method if needed, 
+          # but the reference uses it so I assume it works or they rely on pre-installed. 
+          # Actually, ubuntu-latest has yq. 
+          # However, the reference uses yq -i -o json which implies yq v4.
+          # I will stick to the reference exactly.)
+          yq -i -o json '.version="${{ github.event.release.tag_name }}"' \
+            "${{ github.workspace }}/custom_components/bwt/manifest.json"
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "ZIP the integration directory"
+        shell: "bash"
+        run: |
+          cd "${{ github.workspace }}/custom_components/bwt"
+          zip bwt.zip -r ./
+
+      - name: "Upload the ZIP file to the release"
+        uses: softprops/action-gh-release@v2.0.4
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./bwt.zip
-          asset_name: bwt.zip
-          asset_content_type: application/zip
+          files: ${{ github.workspace }}/custom_components/bwt/bwt.zip
