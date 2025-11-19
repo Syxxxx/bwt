@@ -1,0 +1,15 @@
+
+{
+  "domain": "bwt",
+  "name": "BWT Water Softener",
+  "config_flow": true,
+  "documentation": "https://github.com/Syxxxx/bwt-water-connect",
+  "issue_tracker": "https://github.com/Syxxxx/bwt-water-connect/issues",
+  "dependencies": [],
+  "codeowners": ["@Syx"],
+  "requirements": [],
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "icon": "mdi:water",
+  "version": "0.2.0"
+}

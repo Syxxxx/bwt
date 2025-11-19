@@ -1,0 +1,24 @@
+
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "BWT Water Softener",
+        "description": "Enter your BWT login credentials",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "water_price": "Water price in € per cubic meter",
+          "device_key": "Device key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device already configured"
+    }
+  }
+}
